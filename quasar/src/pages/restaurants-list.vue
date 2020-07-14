@@ -7,7 +7,7 @@
     <p class="text-grey">Teresina</p>
     <p><q-btn to="/" color="primary" label="Trocar localização" /></p>
     <div class="row gutter-lg">
-      <div class="col-4" v-for="i in 5" :key="i">
+      <div class="col-xs-6 col-md-4" v-for="i in 5" :key="i">
         <q-card>
           <q-card-media>
             <img src="~assets/cafe-da-manha.jpg"/>
@@ -23,7 +23,7 @@
             <q-icon name="star_border" v-for="i in star_range(3.5).empty" :key="i"/>
           </q-card-main>
           <q-card-actions>
-            <q-btn to="" flat color="primary" label="Ver cardápio"/>
+            <q-btn to="/restaurant/1" flat color="primary" label="Ver cardápio"/>
           </q-card-actions>
         </q-card>
       </div>

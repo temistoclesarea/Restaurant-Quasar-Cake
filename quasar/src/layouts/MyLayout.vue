@@ -20,6 +20,12 @@
           Restaurante Online
           <!--<div slot="subtitle">Running on Quasar v{{ $q.version }}</div>-->
         </q-toolbar-title>
+        <q-btn flat to="/cart">
+          <transition enter-active-class="animated tada" leave-active-class="hidden">
+            <!-- daneden.github.io/animate.css -->
+            <q-chip icon="shopping_cart" :key="cart_count">{{ cart_count }}</q-chip>
+          </transition>
+        </q-btn>
       </q-toolbar>
     </q-layout-header>
 
@@ -74,10 +80,20 @@ export default {
   data() {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop,
+      cart_count: 0,
     };
   },
   methods: {
     openURL,
+  },
+  mounted() {
+    setTimeout(() => {
+      this.cart_count += 1;
+    }, 1000);
+    setTimeout(() => {
+      this.cart_count += 1;
+    }, 5000);
+    this.$q.notify('Notificação');
   },
 };
 </script>
