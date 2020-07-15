@@ -32,6 +32,7 @@ module.exports = {
   rules: {
     'no-param-reassign': 'off',
     'prefer-promise-reject-errors': 'off',
+    'linebreak-style': 0,
 
     'import/first': 'off',
     'import/named': 'error',

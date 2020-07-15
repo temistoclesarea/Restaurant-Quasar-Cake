@@ -86,6 +86,26 @@ export default {
   methods: {
     openURL,
   },
+  watch: {
+    cart_count(newValue, oldValue) {
+      if (newValue > oldValue) {
+        console.log(newValue, oldValue);
+        this.$q.notify({
+          message: 'Pedido atualizado!',
+          detail: 'Um novo item foi adicionado ao seu pedido, quer ir para o carrinho de compras?',
+          type: 'positive',
+          actions: [
+            {
+              label: 'Ver pedido',
+              handler: () => {
+                this.$router.push('/cart');
+              },
+            },
+          ],
+        });
+      }
+    },
+  },
   mounted() {
     setTimeout(() => {
       this.cart_count += 1;
@@ -93,7 +113,6 @@ export default {
     setTimeout(() => {
       this.cart_count += 1;
     }, 5000);
-    this.$q.notify('Notificação');
   },
 };
 </script>
