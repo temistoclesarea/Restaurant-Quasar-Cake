@@ -107,12 +107,12 @@ export default {
     },
   },
   mounted() {
-    setTimeout(() => {
-      this.cart_count += 1;
-    }, 1000);
-    setTimeout(() => {
-      this.cart_count += 1;
-    }, 5000);
+    // setTimeout(() => {
+    //   this.cart_count += 1;
+    // }, 1000);
+    // setTimeout(() => {
+    //   this.cart_count += 1;
+    // }, 5000);
   },
 };
 </script>

@@ -62,6 +62,10 @@ module.exports = function (ctx) {
         'QCardSeparator',
         'QCardActions',
         'QChip',
+        'QField',
+        'QInput',
+        'QModal',
+        'QRadio',
       ],
       directives: [
         'Ripple'
@@ -70,6 +74,7 @@ module.exports = function (ctx) {
       plugins: [
         'Notify',
         'Dialog',
+        'ActionSheet',
       ]
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       // i18n: 'de' // Quasar language
