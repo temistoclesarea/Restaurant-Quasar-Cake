@@ -43,22 +43,22 @@
           <img class="logo" src="~assets/food-outline.png" alt="food"/>
         </q-item>
         <q-list-header>Menu</q-list-header>
-        <q-item to="/">
+        <q-item to="/home">
           <q-item-side icon="search" />
           <q-item-main label="Quero Pedir"
           sublabel="Busque por restaurantes e faça seu pedido" />
         </q-item>
-        <q-item to="">
+        <q-item to="/new-restaurant">
           <q-item-side icon="fastfood" />
           <q-item-main label="Tenho um restaurante"
           sublabel="Cadastre seu restaurante e receba pedidos" />
         </q-item>
-        <q-item to="">
+        <q-item to="/orders">
           <q-item-side icon="shopping_cart" />
           <q-item-main label="Meus pedidos"
           sublabel="Acompanhe seus últimos pedidos" />
         </q-item>
-        <q-item to="">
+        <q-item to="/auth">
           <q-item-side icon="account_box" />
           <q-item-main label="Entrar"
           sublabel="Acesse sua conta" />
@@ -118,8 +118,18 @@ export default {
 </script>
 
 <style>
-  .logo {
-    width:200px;
-    margin:auto;
-  }
+#sidebar .q-item.router-link-active {
+  background: rgba(0, 0, 0, 0.1);
+}
+#sidebar .q-item.q-link:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+#sidebar .q-item img {
+  width: 80%;
+  height: auto;
+}
+.logo {
+  width:70%;
+  margin:auto;
+}
 </style>

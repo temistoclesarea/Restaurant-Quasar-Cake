@@ -66,6 +66,9 @@ module.exports = function (ctx) {
         'QInput',
         'QModal',
         'QRadio',
+        'QStepper',
+        'QStep',
+        'QStepperNavigation',
       ],
       directives: [
         'Ripple'

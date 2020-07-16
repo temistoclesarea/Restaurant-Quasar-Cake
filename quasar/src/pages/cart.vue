@@ -1,6 +1,8 @@
 <template>
   <q-page padding>
-    <h1 class="q-display-2">Carrinho de compras</h1>
+    <h1 class="q-display-2">
+      Carrinho de compras
+    </h1>
     <q-card class="q-mb-sm" v-for="i in 4" :key="i">
       <q-card-main class="row">
         <div class="col-md-1 col-xs-2">
