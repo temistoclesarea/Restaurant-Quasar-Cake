@@ -11,6 +11,7 @@ const routes = [
       { path: 'cart', component: () => import('pages/cart.vue') },
       { path: 'address/create', component: () => import('pages/address/create.vue') },
       { path: 'order/:id', component: () => import('pages/order.vue') },
+      { path: 'order/:id/details', component: () => import('pages/orders/details.vue') },
       { path: 'orders', component: () => import('pages/orders/list.vue') },
       { path: 'new-restaurant', component: () => import('pages/new-restaurant.vue') },
       { path: 'auth', component: () => import('pages/auth.vue') },
