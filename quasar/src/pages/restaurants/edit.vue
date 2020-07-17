@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <h1 class="q-display-2">
-      Cadastre seu restaurante
+      Editando restaurante
     </h1>
     <form @submit.prevent="submit()" class="row gutter-md">
       <div class="col-12">
@@ -42,8 +42,14 @@
       </div>
 
       <div class="col-12">
+        <h2 class="q-display-1 text-left">Endereço</h2>
+        <address-fields v-model="address"></address-fields>
+      </div>
+
+      <div class="col-12">
         <q-field>
-          <q-btn type="submit" color="primary">Salvar</q-btn>
+          <q-btn type="submit" color="primary" class="q-ma-sm">Salvar</q-btn>
+          <q-btn type="submit" color="secondary" class="q-ma-sm" to="/restaurants">Voltar</q-btn>
         </q-field>
       </div>
     </form>
@@ -51,19 +57,35 @@
 </template>
 
 <script>
+import AddressFields from '../../components/address_fields';
+
 export default {
   data() {
     return {
       data: {
-        //
+        title: 'Nome do restaurante',
+        delivery_time: '10 minutos',
+        delivery_price: '10,00',
+      },
+      address: {
+        cep: '64000300',
+        address: 'Rua fulano',
+        number: '121',
+        complement: 'Casa',
+        neiborhood: 'Centro',
+        city: 'Teresina',
+        state: 'PI',
       },
     };
+  },
+  components: {
+    'address-fields': AddressFields,
   },
   methods: {
     submit() {
       // console.log('form enviado');
       this.$q.notify({
-        message: 'Restaurante adicionado com sucesso',
+        message: 'Restaurante alterado com sucesso',
         type: 'positive',
       });
     },

@@ -2,7 +2,6 @@
   <q-page padding>
     <h1 class="q-display-2">
       <q-icon name="location_on"/> Restaurantes próximos a você
-
     </h1>
     <p class="text-grey">Teresina</p>
     <p><q-btn to="/" color="primary" label="Trocar localização" /></p>

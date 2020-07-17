@@ -48,7 +48,7 @@
           <q-item-main label="Quero Pedir"
           sublabel="Busque por restaurantes e faça seu pedido" />
         </q-item>
-        <q-item to="/new-restaurant">
+        <q-item to="/restaurants">
           <q-item-side icon="fastfood" />
           <q-item-main label="Tenho um restaurante"
           sublabel="Cadastre seu restaurante e receba pedidos" />
