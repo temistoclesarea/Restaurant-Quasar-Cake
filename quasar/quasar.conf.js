@@ -72,6 +72,7 @@ module.exports = function (ctx) {
         'QTable',
         'QTr',
         'QTd',
+        'QAlert',
       ],
       directives: [
         'Ripple'
