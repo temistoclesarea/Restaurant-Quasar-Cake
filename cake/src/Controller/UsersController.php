@@ -31,7 +31,7 @@ class UsersController extends AppController
 
         $user = $this->Auth->identify(); //identifica se for o email ou a senha de algum usuario, ele autentica
 
-        if($user) {
+        if ($user) {
             $this->Auth->setUser($user); // usuario autenticado
             $data = [
                 'token' => JWT::encode([

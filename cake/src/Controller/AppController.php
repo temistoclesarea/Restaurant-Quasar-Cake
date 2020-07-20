@@ -61,6 +61,17 @@ class AppController extends Controller
             ],
         ]);
 
+        $this->response = $this->response // response é imutavel, só pode ser substituido completamente
+            ->cors($this->request)
+            ->allowOrigin(['*']) // ex. ['http://site.com','192.160.86.45']
+            ->allowHeaders(['*']) // ex. ['Autorization']
+            ->allowMethods(['*']) // ex. ['GET','POST']
+            ->build(); // refazer todo o response
+
+        if ($this->request->is('options')) { // tem que liberar, porque se a original for bloqueada, não será executada
+            $this->Auth->allow();
+        }
+
         /*
          * Enable the following component for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html

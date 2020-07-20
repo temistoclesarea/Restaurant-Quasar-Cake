@@ -27,6 +27,7 @@
 
               <q-field>
                 <q-btn type="submit" color="primary" class="q-my-md">Acessar</q-btn>
+                <q-btn color="primary" class="q-ma-md" @click="testar()">Testar</q-btn>
               </q-field>
 
             </form>
@@ -82,24 +83,55 @@
 </template>
 
 <script>
+import qs from 'qs';
+
 export default {
   data() {
     return {
       data: {},
+      token: null,
     };
   },
   methods: {
-    auth() {
-      this.$q.notify({
-        message: 'Autenticado com sucesso',
-        type: 'positive',
+    async testar() {
+      const response = await this.$axios.get('/users/view.json', {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
       });
+      console.log(response);
     },
-    register() {
-      this.$q.notify({
-        message: 'Cadastrado com sucesso',
-        type: 'positive',
-      });
+    async auth() {
+      const data = qs.stringify(this.data);
+      const response = await this.$axios.post('/users/login.json', data);
+      console.log(response);
+      // const token = response.data.data.token; error Use object destructuring
+      // é necessario alterar o padrão para o informado abaixo
+      // é a mesma coisa, só que um é atalho do outro, mas mesmo assim
+      // o outro da erro.
+      const { token } = response.data.data; // cria variavel token com o valor dentro
+      // console.log(token);
+      this.token = token;
+
+      if (response.status === 200) {
+        this.$q.notify({
+          message: 'Autenticado com sucesso',
+          type: 'positive',
+        });
+      }
+    },
+
+    async register() {
+      const data = qs.stringify(this.data);
+      const response = await this.$axios.post('/users/add.json', data);
+      // console.log(response);
+
+      if (response.status === 200) {
+        this.$q.notify({
+          message: 'Cadastrado com sucesso',
+          type: 'positive',
+        });
+      }
     },
   },
 };
