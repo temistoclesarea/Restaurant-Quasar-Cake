@@ -36,7 +36,7 @@ class UsersController extends AppController
             $data = [
                 'token' => JWT::encode([
                     'sub' => $user['id'], // valor que vai codificar
-                    'ext' => time() + 3600 * 24 * 30, // tempo de vida para o token expirar
+                    'ext' => time() + 3600 * 24 * 1, // tempo de vida para o token expirar
                 ], Security::salt()),
             ];
 
@@ -71,6 +71,15 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
 
         $user = $this->Users->patchEntity($user, $this->request->getData());
+
+        if (count($user->errors()) > 0) {
+            $this->response = $this->response->withStatus(422);
+            $this->set([
+                'errors' => $user->errors(),
+                '_serialize' => ['errors'],
+            ]);
+            return;
+        }
 
         $this->Users->save($user);
 

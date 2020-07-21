@@ -14,20 +14,20 @@
               <q-field icon="email">
                 <q-input
                 type="email"
-                v-model="data.email"
+                v-model="dataLogin.email"
                 float-label="Email"/>
               </q-field>
 
               <q-field icon="lock">
                 <q-input
                 type="password"
-                v-model="data.password"
+                v-model="dataLogin.password"
                 float-label="Senha"/>
               </q-field>
 
               <q-field>
                 <q-btn type="submit" color="primary" class="q-my-md">Acessar</q-btn>
-                <q-btn color="primary" class="q-ma-md" @click="testar()">Testar</q-btn>
+                <!-- <q-btn color="primary" class="q-ma-md" @click="testar()">Testar</q-btn> -->
               </q-field>
 
             </form>
@@ -44,7 +44,7 @@
               <q-field icon="label">
                 <q-input
                 type="text"
-                v-model="data.name"
+                v-model="dataRegister.name"
                 float-label="Name"
                 autofocus/>
               </q-field>
@@ -52,21 +52,21 @@
               <q-field icon="email">
                 <q-input
                 type="email"
-                v-model="data.email"
+                v-model="dataRegister.email"
                 float-label="Email"/>
               </q-field>
 
               <q-field icon="lock">
                 <q-input
                 type="password"
-                v-model="data.password"
+                v-model="dataRegister.password"
                 float-label="Senha"/>
               </q-field>
 
               <q-field icon="lock_open">
                 <q-input
                 type="password"
-                v-model="data.passwordConfirmation"
+                v-model="dataRegister.passwordConfirmation"
                 float-label="Confirmação de senha"/>
               </q-field>
 
@@ -88,23 +88,40 @@ import qs from 'qs';
 export default {
   data() {
     return {
-      data: {},
+      dataLogin: {},
+      dataRegister: {},
       token: null,
     };
   },
   methods: {
-    async testar() {
+    /* async testar() {
       const response = await this.$axios.get('/users/view.json', {
         headers: {
           Authorization: `Bearer ${this.token}`,
         },
       });
       console.log(response);
-    },
+    }, */
     async auth() {
-      const data = qs.stringify(this.data);
+      if (!this.dataLogin.email || !this.dataLogin.password) {
+        this.$q.notify({
+          message: 'Email e Senha são obrigatórios',
+          type: 'warning',
+          textColor: 'black',
+        });
+        return;
+      }
+
+      const data = qs.stringify(this.dataLogin);
       const response = await this.$axios.post('/users/login.json', data);
-      console.log(response);
+      // console.log(response);
+      /* if (response.status === 400) {
+        this.$q.notify({
+          message: 'Usuário não encontrado.',
+          type: 'negative',
+        });
+        return;
+      } */
       // const token = response.data.data.token; error Use object destructuring
       // é necessario alterar o padrão para o informado abaixo
       // é a mesma coisa, só que um é atalho do outro, mas mesmo assim
@@ -122,7 +139,16 @@ export default {
     },
 
     async register() {
-      const data = qs.stringify(this.data);
+      if (!this.dataRegister.password
+      || this.dataRegister.password
+      !== this.dataRegister.passwordConfirmation) {
+        this.$q.notify({
+          message: 'As senhas não conferem',
+          type: 'negative',
+        });
+        return;
+      }
+      const data = qs.stringify(this.dataRegister);
       const response = await this.$axios.post('/users/add.json', data);
       // console.log(response);
 
