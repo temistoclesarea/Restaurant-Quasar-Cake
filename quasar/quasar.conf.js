@@ -82,6 +82,8 @@ module.exports = function (ctx) {
         'Notify',
         'Dialog',
         'ActionSheet',
+        'Cookies',
+        'Loading',
       ]
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       // i18n: 'de' // Quasar language

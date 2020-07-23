@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     /* async testar() {
-      const response = await this.$axios.get('/users/view.json', {
+      const response = await this.$axios.get('/users/me.json', {
         headers: {
           Authorization: `Bearer ${this.token}`,
         },
@@ -115,13 +115,6 @@ export default {
       const data = qs.stringify(this.dataLogin);
       const response = await this.$axios.post('/users/login.json', data);
       // console.log(response);
-      /* if (response.status === 400) {
-        this.$q.notify({
-          message: 'Usuário não encontrado.',
-          type: 'negative',
-        });
-        return;
-      } */
       // const token = response.data.data.token; error Use object destructuring
       // é necessario alterar o padrão para o informado abaixo
       // é a mesma coisa, só que um é atalho do outro, mas mesmo assim
@@ -129,6 +122,10 @@ export default {
       const { token } = response.data.data; // cria variavel token com o valor dentro
       // console.log(token);
       this.token = token;
+      // cria o cookie com o token gerado
+      this.$q.cookies.set('token', token);
+      // todas as requisições que forem feitas, será utilizando esse cabeçalho
+      this.$axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
       if (response.status === 200) {
         this.$q.notify({
@@ -136,6 +133,8 @@ export default {
           type: 'positive',
         });
       }
+
+      this.$router.push('/');
     },
 
     async register() {

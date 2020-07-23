@@ -54,7 +54,7 @@ class UsersController extends AppController
     }
 
 
-    public function view()
+    public function me()
     {
         $user = $this->Auth->user();
         $this->set([
