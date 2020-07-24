@@ -63,7 +63,7 @@ class RestaurantsController extends AppController
 
             $restaurant->address = $address;
 
-            $this->Restaurants->save($restaurant);
+            // $this->Restaurants->save($restaurant);
         }
         $this->set([
             'restaurant' => $restaurant,

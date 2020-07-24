@@ -16,10 +16,11 @@
 
       <div class="col-12">
         <q-field icon="insert_photo">
-          <q-input
-            type="text"
-            v-model="data.photo"
-            float-label="Foto do restaurante"/>
+          <q-uploader
+            url=""
+            hide-upload-button
+            float-label="Foto do restaurante"
+            @add="addFile"/>
         </q-field>
       </div>
 
@@ -64,6 +65,7 @@ export default {
     return {
       data: {},
       address: {},
+      formData: null,
     };
   },
   components: {
@@ -75,13 +77,22 @@ export default {
     },
   },
   methods: {
+    addFile(file) {
+      // console.log(file);
+      this.formData.append('photo', file[0]); // adiciona o arquivo para upload
+    },
     submit() {
+      this.$store.dispatch('restaurants/create', { vue: this, data: this.formData });
       // console.log('form enviado');
       this.$q.notify({
         message: 'Restaurante adicionado com sucesso',
         type: 'positive',
       });
     },
+  },
+  mounted() {
+    // envia dados de formulario, suporte oficial para envio de formulario
+    this.formData = new FormData();
   },
 };
 </script>
