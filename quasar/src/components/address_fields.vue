@@ -38,7 +38,7 @@
       <q-field>
         <q-input
           type="text"
-          v-model="data.neiborhood"
+          v-model="data.neighborhood"
           float-label="Informe o bairro"
         />
       </q-field>
@@ -75,9 +75,24 @@ export default {
   watch: {
     cep(newValue) {
       if (newValue.length === 8) {
+        const removeAuthHeader = (data, headers) => {
+          delete headers.common.Authorization;
+          return data;
+        };
+
         this.data.cep = newValue;
         this.$emit('input', this.data);
-        this.showAddressFields = true;
+
+        this.$axios.get(`https://viacep.com.br/ws/${newValue}/json/`, {
+          transformRequest: [removeAuthHeader],
+        }).then((res) => {
+          console.log(res);
+          this.data.address = res.data.logradouro;
+          this.data.neighborhood = res.data.bairro;
+          this.data.city = res.data.localidade;
+          this.data.state = res.data.uf;
+          this.showAddressFields = true;
+        });
       } else {
         this.showAddressFields = false;
       }

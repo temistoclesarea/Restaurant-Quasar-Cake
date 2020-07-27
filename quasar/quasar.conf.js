@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 // Configuration for your app
 
 module.exports = function (ctx) {

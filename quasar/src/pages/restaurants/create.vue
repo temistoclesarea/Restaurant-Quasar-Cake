@@ -81,13 +81,20 @@ export default {
       // console.log(file);
       this.formData.append('photo', file[0]); // adiciona o arquivo para upload
     },
-    submit() {
-      this.$store.dispatch('restaurants/create', { vue: this, data: this.formData });
+    async submit() {
+      // pega todas as chaves do objeto this.data e criar um array
+      // depois percorre cada item e adiciona a chave de data
+      Object.keys(this.data).forEach(key => this.formData.append(key, this.data[key]));
+      Object.keys(this.address).forEach(key => this.formData.append(key, this.address[key]));
+      // async await - aguarda o store terminar para passar para o proximo passo
+      await this.$store.dispatch('restaurants/create', { vue: this, data: this.formData });
       // console.log('form enviado');
       this.$q.notify({
         message: 'Restaurante adicionado com sucesso',
         type: 'positive',
       });
+
+      this.$router.push('/restaurants');
     },
   },
   mounted() {

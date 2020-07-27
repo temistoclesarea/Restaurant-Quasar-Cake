@@ -44,6 +44,7 @@ class AddressesTable extends Table
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
         ]);
+        
         $this->belongsTo('Restaurants', [
             'foreignKey' => 'restaurant_id',
         ]);

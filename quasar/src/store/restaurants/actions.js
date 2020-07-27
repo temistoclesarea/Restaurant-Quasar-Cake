@@ -20,10 +20,11 @@ export function current(context, config) {
 export function create(context, config) {
   const { vue } = config; // mesma coisa de config.vue
   const { data } = config; // mesma coisa de config.data
-  // let { data } = config; // mesma coisa de config.data
 
+  // não foi utilizado por o formData já faz o trabalho de serializar
+  // let { data } = config; // mesma coisa de config.data
   // key=valor&key2=valor2...
   // data = qs.stringify(data); // pega cada item de data e transforma em valor serializado para php
 
-  return vue.$axios.post('/restaurants.json', data);
+  return vue.$axios.post('/restaurants/add.json', data);
 }

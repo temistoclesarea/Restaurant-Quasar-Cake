@@ -45,7 +45,7 @@ class RestaurantsTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
-        
+
         $this->hasOne('Addresses', [
             'foreignKey' => 'restaurant_id',
             'propertyName' => 'address',

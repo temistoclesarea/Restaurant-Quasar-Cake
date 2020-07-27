@@ -62,7 +62,7 @@ class CreateAddresses extends AbstractMigration
             'default' => null,
             'null' => false,
         ]);
-        $table->addColumn('updated', 'datetime', [
+        $table->addColumn('modified', 'datetime', [
             'default' => null,
             'null' => false,
         ]);

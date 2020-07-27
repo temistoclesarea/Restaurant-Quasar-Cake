@@ -51,6 +51,7 @@ class RestaurantsController extends AppController
     public function add()
     {
         $restaurant = $this->Restaurants->newEntity();
+
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $data['user_id'] = $this->Auth->user('id');
@@ -63,8 +64,9 @@ class RestaurantsController extends AppController
 
             $restaurant->address = $address;
 
-            // $this->Restaurants->save($restaurant);
+            $this->Restaurants->save($restaurant);
         }
+
         $this->set([
             'restaurant' => $restaurant,
             '_serialize' => [
