@@ -15,12 +15,12 @@ export default {
   watch: {
     request_counter(counter) {
       if (counter > 0) {
-        console.log(counter);
+        // console.log(counter);
         this.$q.loading.show({
           message: 'Consultando o servidor',
         });
       } else {
-        console.log(counter);
+        // console.log(counter);
         this.$q.loading.hide();
       }
     },

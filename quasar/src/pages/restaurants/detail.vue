@@ -6,13 +6,16 @@
 
     <q-card class="q-mb-md">
       <q-card-main>
-        <p>Título: Meu restaurante</p>
-        <p>Tempo de entrega: 50 minutos</p>
-        <p>Valor de entrega: R$ 10,00</p>
+
+        <p>Título: Meu {{ restaurant.title }}</p>
+        <p>Tempo de entrega: {{ restaurant.delivery_time }}</p>
+        <p>Valor de entrega: {{ restaurant.delivery_price }}</p>
         <hr>
-        <p>
-          Rua. Fulano, 212 - Centro<br>
-          Teresina - PI - Cep: 64.000-000
+        <p vif="restaurant.address">
+          {{ restaurant.address.address }},
+          {{ restaurant.address.number }} - {{ restaurant.address.neighborhood }}<br>
+          {{ restaurant.address.city }} - {{ restaurant.address.state }} -
+          CEP: {{ restaurant.address.cep }}
         </p>
       </q-card-main>
     </q-card>
@@ -65,10 +68,13 @@ export default {
       ],
     };
   },
+  computed: {
+    restaurant() {
+      return this.$store.state.restaurants.current;
+    },
+  },
   mounted() {
-    if (this.tableData.length === 0) {
-      this.$router.push('/new-restaurant');
-    }
+    this.$store.dispatch('restaurants/current', { vue: this, id: this.$route.params.id });
   },
 };
 </script>

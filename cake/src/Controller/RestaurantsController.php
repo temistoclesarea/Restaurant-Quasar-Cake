@@ -78,20 +78,35 @@ class RestaurantsController extends AppController
 
     public function edit($id = null)
     {
-        /* $restaurant = $this->Restaurants->get($id, [
-            'contain' => [],
+        $restaurant = $this->Restaurants->get($id, [
+            'contain' => ['Address'],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $restaurant = $this->Restaurants->patchEntity($restaurant, $this->request->getData());
-            if ($this->Restaurants->save($restaurant)) {
-                $this->Flash->success(__('The restaurant has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $data = $this->request->getData();
+
+            // impede que o usuario troque o id do user
+            if (!empty($data['user_id'])) {
+                unset($data['user_id']);
             }
-            $this->Flash->error(__('The restaurant could not be saved. Please, try again.'));
+
+            // se ele for um array, ele esta tentando fazer upload
+            if (is_array($data['photo'])) {
+                $data['photo'] = Uploader::handler($data['photo'], 'restaurant');
+            }
+
+            $restaurant = $this->Restaurants->patchEntity($restaurant, $data);
+            $restaurant->address = $this->Restaurants->Addresses->patchEntity($restaurant->address, $data);
+
+            $this->Restaurants->save($restaurant);
         }
-        $users = $this->Restaurants->Users->find('list', ['limit' => 200]);
-        $this->set(compact('restaurant', 'users')); */
+
+        $this->set([
+            'restaurant' => $restaurant,
+            '_serialize' => [
+                'restaurant',
+            ],
+        ]);
     }
 
 

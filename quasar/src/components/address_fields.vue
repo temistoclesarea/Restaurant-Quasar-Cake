@@ -73,6 +73,10 @@ export default {
     };
   },
   watch: {
+    value(v) {
+      this.data = v;
+      this.cep = v.cep;
+    },
     cep(newValue) {
       if (newValue.length === 8) {
         const removeAuthHeader = (data, headers) => {
@@ -86,7 +90,7 @@ export default {
         this.$axios.get(`https://viacep.com.br/ws/${newValue}/json/`, {
           transformRequest: [removeAuthHeader],
         }).then((res) => {
-          console.log(res);
+          // console.log(res);
           this.data.address = res.data.logradouro;
           this.data.neighborhood = res.data.bairro;
           this.data.city = res.data.localidade;

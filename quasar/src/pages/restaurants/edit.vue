@@ -16,10 +16,11 @@
 
       <div class="col-12">
         <q-field icon="insert_photo">
-          <q-input
-            type="text"
-            v-model="data.photo"
-            float-label="Foto do restaurante"/>
+          <q-uploader
+            url=""
+            hide-upload-button
+            float-label="Foto do restaurante"
+            @add="addFile"/>
         </q-field>
       </div>
 
@@ -62,33 +63,47 @@ import AddressFields from '../../components/address_fields';
 export default {
   data() {
     return {
-      data: {
-        title: 'Nome do restaurante',
-        delivery_time: '10 minutos',
-        delivery_price: '10,00',
-      },
-      address: {
-        cep: '64000300',
-        address: 'Rua fulano',
-        number: '121',
-        complement: 'Casa',
-        neiborhood: 'Centro',
-        city: 'Teresina',
-        state: 'PI',
-      },
+      formData: null,
     };
   },
   components: {
     'address-fields': AddressFields,
   },
+  computed: {
+    data() {
+      return this.$store.state.restaurants.current;
+    },
+    address: {
+      get() {
+        return this.$store.state.restaurants.current.address || {};
+      },
+      set(newValue) {
+        this.data.address = newValue;
+        this.$store.commit('restaurants/setCurrent', this.data);
+      },
+    },
+  },
   methods: {
-    submit() {
+    addFile(files) {
+      this.formData.append('photo', files[0]);
+    },
+    async submit() {
       // console.log('form enviado');
+      Object.keys(this.data).forEach(key => this.formData.append(key, this.data[key]));
+      Object.keys(this.address).forEach(key => this.formData.append(key, this.address[key]));
+
+      await this.$store.dispatch('restaurants/edit',
+        { vue: this, data: this.formData, id: this.$route.params.id });
+
       this.$q.notify({
         message: 'Restaurante alterado com sucesso',
         type: 'positive',
       });
     },
+  },
+  mounted() {
+    this.formData = new FormData();
+    this.$store.dispatch('restaurants/current', { vue: this, id: this.$route.params.id });
   },
 };
 </script>
