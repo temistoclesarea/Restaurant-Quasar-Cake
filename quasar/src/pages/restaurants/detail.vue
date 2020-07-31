@@ -6,12 +6,11 @@
 
     <q-card class="q-mb-md">
       <q-card-main>
-
         <p>Título: Meu {{ restaurant.title }}</p>
         <p>Tempo de entrega: {{ restaurant.delivery_time }}</p>
         <p>Valor de entrega: {{ restaurant.delivery_price }}</p>
         <hr>
-        <p vif="restaurant.address">
+        <p v-if="restaurant.address">
           {{ restaurant.address.address }},
           {{ restaurant.address.number }} - {{ restaurant.address.neighborhood }}<br>
           {{ restaurant.address.city }} - {{ restaurant.address.state }} -

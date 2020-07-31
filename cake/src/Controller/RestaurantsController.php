@@ -55,7 +55,7 @@ class RestaurantsController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $data['user_id'] = $this->Auth->user('id');
-            $data['photo'] = Uploader::handler($data['photo'], 'restaurant');
+            $data['photo'] = Uploader::handler($data['photo'], 'restaurants');
             $restaurant = $this->Restaurants->patchEntity($restaurant, $data);
 
             unset($data['user_id']);
@@ -79,7 +79,7 @@ class RestaurantsController extends AppController
     public function edit($id = null)
     {
         $restaurant = $this->Restaurants->get($id, [
-            'contain' => ['Address'],
+            'contain' => ['Addresses'],
         ]);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -92,7 +92,7 @@ class RestaurantsController extends AppController
 
             // se ele for um array, ele esta tentando fazer upload
             if (is_array($data['photo'])) {
-                $data['photo'] = Uploader::handler($data['photo'], 'restaurant');
+                $data['photo'] = Uploader::handler($data['photo'], 'restaurants');
             }
 
             $restaurant = $this->Restaurants->patchEntity($restaurant, $data);
