@@ -16,10 +16,11 @@
 
       <div class="col-12">
         <q-field icon="insert_photo">
-          <q-input
-            type="text"
-            v-model="data.photo"
-            float-label="Foto do prato"/>
+          <q-uploader
+            stack-label="Foto do prato"
+            hide-upload-button
+            url=""
+            @add="addFile" />
         </q-field>
       </div>
 
@@ -36,7 +37,7 @@
         <q-field icon="attach_money">
           <q-input
             type="text"
-            v-model="data.attach_money"
+            v-model="data.price"
             float-label="Valor do prato"/>
         </q-field>
       </div>
@@ -94,15 +95,35 @@ export default {
       data: {},
       options: [],
       optionLabel: null,
+      formData: null,
     };
   },
   methods: {
-    submit() {
+    addFile(files) {
+      this.formData.append('photo', files[0]);
+    },
+    async submit() {
+      /* data {
+        chave1: valor1,
+        chave2: valor2,
+      }
+      const lista = Object.keys(data);
+      lista [
+        'chave1',
+        'chave2',
+      ] */
+      Object.keys(this.data).forEach(key => this.formData.append(key, this.data[key]));
+      this.formData.append('restaurant_id', this.$route.params.id);
+      this.formData.append('options', JSON.stringify(this.options));
+
+      await this.$store.dispatch('plates/create', { vue: this, data: this.formData });
       // console.log('form enviado');
       this.$q.notify({
         message: 'Prato cadastrado com sucesso',
         type: 'positive',
       });
+
+      this.$router.push(`/restaurant/${this.$route.params.id}/detail`);
     },
     optionsDelete(i) {
       this.options.splice(i, 1); // removendo só o item atual
@@ -117,6 +138,9 @@ export default {
       this.options.push(this.optionLabel);
       this.optionLabel = null;
     },
+  },
+  mounted() {
+    this.formData = new FormData();
   },
 };
 </script>

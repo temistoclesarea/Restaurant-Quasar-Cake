@@ -16,10 +16,11 @@
 
       <div class="col-12">
         <q-field icon="insert_photo">
-          <q-input
-            type="text"
-            v-model="data.photo"
-            float-label="Foto do prato"/>
+          <q-uploader
+            stack-label="Foto do prato"
+            hide-upload-button
+            url=""
+             />
         </q-field>
       </div>
 
@@ -36,7 +37,7 @@
         <q-field icon="attach_money">
           <q-input
             type="text"
-            v-model="data.attach_money"
+            v-model="data.price"
             float-label="Valor do prato"/>
         </q-field>
       </div>
@@ -58,7 +59,7 @@
 
             <ul v-show="options.length > 0">
               <li class="q-my-sm" v-for="(opt, i) in options" :key="i">
-                <q-btn size="sm" color="red" @click="optionsDelete(i)">x</q-btn> {{ opt }}
+                <q-btn size="sm" color="red" @click="optionsDelete(i)">x</q-btn> {{ opt.title }}
               </li>
             </ul>
 
@@ -91,16 +92,6 @@
 export default {
   data() {
     return {
-      data: {
-        title: 'Nome do prato',
-        photo: 'Foto do prato',
-        description: 'Descrição deste prato, ingredientes, etc',
-        attach_money: 'R$ 50,00',
-      },
-      options: [
-        'opção 1',
-        'opção 2',
-      ],
       optionLabel: null,
     };
   },
@@ -122,9 +113,22 @@ export default {
         });
         return;
       }
-      this.options.push(this.optionLabel);
+      this.options.push({ title: this.optionLabel });
       this.optionLabel = null;
     },
+  },
+  computed: {
+    data() {
+      const { current } = this.$store.state.plates;
+      return current;
+    },
+    options() {
+      const { current } = this.$store.state.plates;
+      return current.plate_options || [];
+    },
+  },
+  mounted() {
+    this.$store.dispatch('plates/current', { vue: this, id: this.$route.params.id });
   },
 };
 </script>

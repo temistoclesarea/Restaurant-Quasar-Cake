@@ -19,7 +19,7 @@ const routes = [
       { path: 'restaurant/:id/edit', component: () => import('pages/restaurants/edit.vue') },
       { path: 'restaurant/:id/detail', component: () => import('pages/restaurants/detail.vue') },
       { path: 'restaurant/plate/:id/edit', component: () => import('pages/restaurants/plate/edit.vue') },
-      { path: 'restaurant/plate/create', component: () => import('pages/restaurants/plate/create.vue') },
+      { path: 'restaurant/:id/plate/create', component: () => import('pages/restaurants/plate/create.vue') },
     ],
   },
 ];

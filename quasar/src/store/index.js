@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import restaurants from './restaurants';
+import plates from './plates';
 
 Vue.use(Vuex);
 
@@ -14,6 +15,7 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       restaurants,
+      plates,
     },
   });
 

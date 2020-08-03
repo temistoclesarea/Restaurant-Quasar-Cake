@@ -36,8 +36,9 @@
         </q-td>
       </q-tr>
     </q-table>
-
-    <q-btn color="primary" to="/restaurant/plate/create" class="q-my-md">Novo prato</q-btn>
+    <!-- camada de template não tem o this.$route. -->
+    <q-btn color="primary" :to="`/restaurant/${$route.params.id}/plate/create`"
+      class="q-my-md">Novo prato</q-btn>
   </q-page>
 </template>
 
@@ -45,16 +46,6 @@
 export default {
   data() {
     return {
-      tableData: [
-        {
-          id: 1,
-          title: 'Nome do prato',
-        },
-        {
-          id: 2,
-          title: 'Nome do prato',
-        },
-      ],
       columns: [
         {
           field: 'id',
@@ -71,9 +62,13 @@ export default {
     restaurant() {
       return this.$store.state.restaurants.current;
     },
+    tableData() {
+      return this.$store.state.plates.list;
+    },
   },
   mounted() {
     this.$store.dispatch('restaurants/current', { vue: this, id: this.$route.params.id });
+    this.$store.dispatch('plates/all', { vue: this, id: this.$route.params.id });
   },
 };
 </script>
