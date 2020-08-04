@@ -92,11 +92,37 @@
 export default {
   data() {
     return {
+      formData: null,
       optionLabel: null,
     };
   },
+  computed: {
+    data() {
+      const { current } = this.$store.state.plates;
+      return current;
+    },
+    options() {
+      const { current } = this.$store.state.plates;
+      return current.plate_options || [];
+    },
+  },
   methods: {
-    submit() {
+    async submit() {
+      Object.Keys(this.data).forEach(key => this.formData.append(key, this.data[key]));
+      /* 
+      [{
+        title: 'string',
+      }]
+      converter para
+      [
+        'string',
+      ] */
+      const options = [];
+      this.options.forEach(value => options.push(value.title));
+      this.formData.append('options', JSON.stringify('options'));
+
+      await this.$store.dispatch('plates/edit', { vue: this, id: this.route.params.id, data: this.formData });
+
       // console.log('form enviado');
       this.$q.notify({
         message: 'Prato alterado com sucesso',
@@ -117,17 +143,8 @@ export default {
       this.optionLabel = null;
     },
   },
-  computed: {
-    data() {
-      const { current } = this.$store.state.plates;
-      return current;
-    },
-    options() {
-      const { current } = this.$store.state.plates;
-      return current.plate_options || [];
-    },
-  },
   mounted() {
+    this.formData = new FormData();
     this.$store.dispatch('plates/current', { vue: this, id: this.$route.params.id });
   },
 };
