@@ -14,10 +14,10 @@
           </q-card-title>
           <q-card-separator/>
           <q-card-main>
-            Próximo de ...
+            Próximo de {{ currentPosition }}
           </q-card-main>
           <q-card-actions>
-            <q-btn to="/list-restaurants" flat label="Ver restaurantes"/>
+            <q-btn @click="getCurrentPosition()" flat label="Ver restaurantes"/>
           </q-card-actions>
         </q-card>
       </div>
@@ -77,6 +77,9 @@ export default {
   name: 'PageIndex',
   data() {
     return {
+      currentPosition: '...',
+      currentAddressComponents: [],
+      selectedPosition: null,
       places: [
         'Cidade 1',
         'Cidade 2',
@@ -85,6 +88,62 @@ export default {
         'Bairro 3',
       ],
     };
+  },
+  mounted() {
+    navigator.geolocation.getCurrentPosition(this.showLocation);
+  },
+  methods: {
+    async showLocation(position) {
+      // evita erro de cors e remove authorization
+      const removeAuthHeader = (data, headers) => {
+        delete headers.common.Authorization;
+        return data;
+      };
+
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const key = 'AIzaSyAmPoSRGtztI_bD99gGZLfzZ424Qt-9o1c';
+      // console.log(lat, lon, key);
+      // não vai pegar o response pois a apigeocode exige informações de faturamento
+      // que necessita ser cadastrado no google
+      const response = await this.$axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${key}`, {
+        transformRequest: [removeAuthHeader],
+      });
+      let { results } = response.data;
+      results = results[0] || {};
+      this.currentPosition = results.formatted_address;
+      // console.log(results);
+      const addressComponents = results.address_components || [];
+      // console.log(addressComponents);
+      addressComponents.forEach((data) => {
+        if (data.types.indexOf('sublocality_level_1') >= 0 || data.types.indexOf('administrative_area_level_2') >= 0) {
+          this.currentAddressComponents.push({
+            label: data.long_name,
+            value: data.long_name,
+          });
+
+          if (this.selectedPosition === null) {
+            this.selectedPosition = data.long_name;
+          }
+        }
+      });
+    },
+    getCurrentPosition() {
+      this.$q.dialog({
+        title: 'Escolha um local',
+        options: {
+          type: 'radio',
+          model: this.selectedPosition,
+          items: this.currentAddressComponents,
+          /* items: [
+            { label: 'Cidade', value: 'cidade' },
+            { label: 'Bairro', value: 'bairro' },
+          ], */
+        },
+      }).then((data) => {
+        this.$router.push(`/list-restaurants/${data}`);
+      });
+    },
   },
 };
 </script>

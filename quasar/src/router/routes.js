@@ -6,7 +6,7 @@ const routes = [
     children: [
       { path: '', redirect: '/home' }, // Redirecionamento temporario, corrige os menus
       { path: 'home', component: () => import('pages/Index.vue') },
-      { path: 'list-restaurants', component: () => import('pages/restaurants/front-list.vue') },
+      { path: 'list-restaurants/:location', component: () => import('pages/restaurants/front-list.vue') },
       { path: 'restaurant/:id', component: () => import('pages/restaurants/detail-front.vue') },
       { path: 'cart', component: () => import('pages/cart.vue') },
       { path: 'address/create', component: () => import('pages/address/create.vue') },

@@ -3,7 +3,7 @@
     <h1 class="q-display-2">
       <q-icon name="location_on"/> Restaurantes próximos a você
     </h1>
-    <p class="text-grey">Teresina</p>
+    <p class="text-grey">{{ $route.params.location }}</p>
     <p><q-btn to="/" color="primary" label="Trocar localização" /></p>
     <div class="row gutter-lg">
       <div class="col-xs-6 col-md-4" v-for="i in 5" :key="i">
