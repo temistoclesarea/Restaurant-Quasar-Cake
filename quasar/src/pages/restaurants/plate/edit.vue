@@ -107,21 +107,23 @@ export default {
     },
   },
   methods: {
+    addFile(files) {
+      this.formData.append('photo', files[0]);
+    },
     async submit() {
-      Object.Keys(this.data).forEach(key => this.formData.append(key, this.data[key]));
-      /* 
-      [{
-        title: 'string',
-      }]
+      Object.keys(this.data).forEach(key => this.formData.append(key, this.data[key]));
+      /*
+      antes array de strings
+      [{ title: 'string', }]
       converter para
-      [
-        'string',
-      ] */
+      [ 'string', ]
+      */
       const options = [];
       this.options.forEach(value => options.push(value.title));
-      this.formData.append('options', JSON.stringify('options'));
+      this.formData.append('options', JSON.stringify(options));
 
-      await this.$store.dispatch('plates/edit', { vue: this, id: this.route.params.id, data: this.formData });
+      await this.$store.dispatch('plates/update',
+        { vue: this, id: this.$route.params.id, data: this.formData });
 
       // console.log('form enviado');
       this.$q.notify({

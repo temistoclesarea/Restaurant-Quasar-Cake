@@ -25,10 +25,8 @@ export function current(context, options) {
 
 export function update(context, options) {
   const { vue } = options;
-  const { data } = options;
   const { id } = options;
-  return vue.$axios.post(`plates/edit/${id}.json`, data)
-    .then((res) => {
-      context.commit('setCurrent', res.data.plate);
-    });
+  const { data } = options;
+
+  return vue.$axios.post(`plates/edit/${id}.json`, data);
 }

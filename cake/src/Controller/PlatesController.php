@@ -75,16 +75,25 @@ class PlatesController extends AppController
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $plate = $this->Plates->patchEntity($plate, $this->request->getData());
-            if ($this->Plates->save($plate)) {
-                $this->Flash->success(__('The plate has been saved.'));
+            $data = $this->request->getData();
 
-                return $this->redirect(['action' => 'index']);
+            // se ele for um array, ele esta tentando fazer upload e precisa ser um array
+            if (is_array($data['photo']) and is_array($data['photo'])) {
+                $data['photo'] = Uploader::handler($data['photo'], 'plates');
             }
-            $this->Flash->error(__('The plate could not be saved. Please, try again.'));
+
+            $plate = $this->Plates->patchEntity($plate, $data);
+            $this->Plates->save($plate);
+
+            if (isset($data['options'])) {
+                $this->options($plate->id, $data['options']);
+            }
         }
-        $restaurants = $this->Plates->Restaurants->find('list', ['limit' => 200]);
-        $this->set(compact('plate', 'restaurants'));
+
+        $this->set([
+            'plate' => $plate,
+            '_serialize' => ['plate'],
+        ]);
     }
 
 

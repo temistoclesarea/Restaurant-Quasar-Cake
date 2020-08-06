@@ -39,3 +39,7 @@ nbproject/*
 .vscode
 # Sass preprocessor
 .sass-cache/
+
+# Project #
+###########
+/webroot/uploader/*
