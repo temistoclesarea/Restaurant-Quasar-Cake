@@ -110,6 +110,28 @@ class RestaurantsController extends AppController
     }
 
 
+    public function search()
+    {
+        $this->paginate = [
+            'contain' => ['Addresses', 'Plates'],
+            'conditions' => [
+                'or' => [
+                    'Addresses.city' => $this->request->query('term'),
+                    'Addresses.neighborhood' => $this->request->query('term'),
+                ],
+            ],
+        ];
+        $restaurants = $this->paginate($this->Restaurants);
+
+        $this->set([
+            'restaurants' => $restaurants,
+            '_serialize' => [
+                'restaurants',
+            ],
+        ]);
+    }
+
+
     /* public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);

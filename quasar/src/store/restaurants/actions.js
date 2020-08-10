@@ -36,3 +36,13 @@ export function edit(context, config) {
 
   return vue.$axios.post(`/restaurants/edit/${id}.json`, data);
 }
+
+export function search(context, options) {
+  const { vue } = options;
+  const { term } = options;
+
+  return vue.$axios.get(`/restaurants/search.json?term=${term}`)
+    .then((res) => { // atualiza a resposta do servidor dentro do mutations
+      context.commit('setList', res.data.restaurants);
+    });
+}

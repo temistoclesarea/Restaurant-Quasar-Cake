@@ -45,6 +45,10 @@ class PlatesTable extends Table
             'foreignKey' => 'restaurant_id',
             'joinType' => 'INNER',
         ]);
+        /* $this->belongsTo('Plates', [
+            'foreignKey' => 'restaurant_id',
+            'joinType' => 'INNER',
+        ]); */
         $this->hasMany('PlateOptions', [
             'foreignKey' => 'plate_id',
         ]);

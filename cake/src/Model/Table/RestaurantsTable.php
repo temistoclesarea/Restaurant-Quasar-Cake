@@ -50,6 +50,10 @@ class RestaurantsTable extends Table
             'foreignKey' => 'restaurant_id',
             'propertyName' => 'address',
         ]);
+
+        $this->hasMany('Plates', [
+            'foreignKey' => 'restaurant_id',
+        ]);
     }
 
     /**

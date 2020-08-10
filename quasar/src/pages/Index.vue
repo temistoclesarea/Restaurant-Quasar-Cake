@@ -90,10 +90,10 @@ export default {
     };
   },
   mounted() {
-    navigator.geolocation.getCurrentPosition(this.showLocation);
+    // navigator.geolocation.getCurrentPosition(this.showLocation);
   },
   methods: {
-    async showLocation(position) {
+    /* async showLocation(position) {
       // evita erro de cors e remove authorization
       const removeAuthHeader = (data, headers) => {
         delete headers.common.Authorization;
@@ -106,7 +106,8 @@ export default {
       // console.log(lat, lon, key);
       // não vai pegar o response pois a apigeocode exige informações de faturamento
       // que necessita ser cadastrado no google
-      const response = await this.$axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${key}`, {
+      const response = await this.$axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${key}`, {
         transformRequest: [removeAuthHeader],
       });
       let { results } = response.data;
@@ -116,7 +117,8 @@ export default {
       const addressComponents = results.address_components || [];
       // console.log(addressComponents);
       addressComponents.forEach((data) => {
-        if (data.types.indexOf('sublocality_level_1') >= 0 || data.types.indexOf('administrative_area_level_2') >= 0) {
+        if (data.types.indexOf('sublocality_level_1') >= 0 ||
+          data.types.indexOf('administrative_area_level_2') >= 0) {
           this.currentAddressComponents.push({
             label: data.long_name,
             value: data.long_name,
@@ -127,18 +129,33 @@ export default {
           }
         }
       });
-    },
-    getCurrentPosition() {
+    }, */
+    /* getCurrentPosition() {
       this.$q.dialog({
         title: 'Escolha um local',
         options: {
           type: 'radio',
           model: this.selectedPosition,
           items: this.currentAddressComponents,
-          /* items: [
-            { label: 'Cidade', value: 'cidade' },
-            { label: 'Bairro', value: 'bairro' },
-          ], */
+          // items: [
+          //  { label: 'Cidade', value: 'cidade' },
+          //  { label: 'Bairro', value: 'bairro' },
+          // ],
+        },
+      }).then((data) => {
+        this.$router.push(`/list-restaurants/${data}`);
+      });
+    }, */
+    getCurrentPosition() {
+      this.$q.dialog({
+        title: 'Escolha um local',
+        options: {
+          type: 'radio',
+          model: this.selectedPosition,
+          items: [
+            { label: 'Teresina', value: 'teresina' },
+            { label: 'Planalto', value: 'planalto' },
+          ],
         },
       }).then((data) => {
         this.$router.push(`/list-restaurants/${data}`);
