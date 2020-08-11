@@ -17,6 +17,7 @@ class PlatesController extends AppController
     public function index($restaurant_id)
     {
         $this->paginate = [
+            'contain' => ['PlateOptions'],
             'conditions' => [
                 'restaurant_id' => $restaurant_id,
             ],

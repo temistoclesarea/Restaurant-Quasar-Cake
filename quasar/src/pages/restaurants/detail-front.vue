@@ -1,27 +1,28 @@
 <template>
   <q-page padding>
     <h1 class="q-display-2">
-      <q-icon name="location_on"/> Nome do restaurante
+      <q-icon name="location_on"/> {{ restaurant.title }}
     </h1>
     <p class="q-mb-lg"><span class="text-amber"><q-icon name="star"/> 3.5</span> |
-    <span class="text-grey">Entrega em 30-40 min - valor da entrega: R$ 5,00</span></p>
+    <span class="text-grey">Entrega em {{ restaurant.delivery_time }} -
+      valor da entrega: R$ {{ restaurant.delivery_price }}</span></p>
     <p><q-btn to="/" color="primary" label="Trocar localização" /></p>
     <div class="row gutter-lg">
-      <div class="col-xs-12 col-md-6" v-for="i in 5" :key="i">
+      <div class="col-xs-12 col-md-6" v-for="(plate, i) in plates" :key="i">
         <q-card>
           <q-card-media>
-            <img src="~assets/cafe-da-manha.jpg"/>
+            <img :src="'http://localhost:8765/uploader/plates/' + plate.photo"/>
             <q-card-title>
-              Nome do Prato
-              <span slot="subtitle">R$ 15,00</span>
+              {{ plate.title }}
+              <span slot="subtitle">R$ {{ plate.price }}</span>
             </q-card-title>
           </q-card-media>
           <q-card-separator/>
           <q-card-main>
-            Aqui teremos uma descrição do prato, com ingredientes (por exemplo)
+            {{ plate.description }}
           </q-card-main>
           <q-card-actions>
-            <q-btn flat color="primary" label="Pedir" @click="order()"/>
+            <q-btn flat color="primary" label="Pedir" @click="order(plate)"/>
           </q-card-actions>
         </q-card>
       </div>
@@ -38,23 +39,40 @@ export default {
     };
   },
   methods: {
-    order() {
+    order(plate) {
+      const options = [];
+
+      plate.plate_options.forEach((data) => {
+        options.push({
+          label: data.title,
+          value: data.title,
+        });
+      });
+
       this.$q.dialog({
         title: 'Confirmar pedido',
         options: {
           type: 'checkbox',
           model: this.opt,
-          items: [
-            { label: 'Opção 1', value: 1 },
-            { label: 'Opção 2', value: 2 },
-            { label: 'Opção 3', value: 3 },
-          ],
+          items: options,
         },
       }).then((data) => { /* executando quando confirma a ação */
         console.log(data);
         this.opt = data; /* já deixa a opção marcada */
       });
     },
+  },
+  computed: {
+    restaurant() {
+      return this.$store.state.restaurants.current;
+    },
+    plates() {
+      return this.$store.state.plates.list;
+    },
+  },
+  mounted() {
+    this.$store.dispatch('restaurants/current', { vue: this, id: this.$route.params.id });
+    this.$store.dispatch('plates/all', { vue: this, id: this.$route.params.id });
   },
 };
 </script>
