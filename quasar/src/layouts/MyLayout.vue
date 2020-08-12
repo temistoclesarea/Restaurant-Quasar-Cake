@@ -80,8 +80,12 @@ export default {
   data() {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop,
-      cart_count: 0,
     };
+  },
+  computed: {
+    cart_count() {
+      return this.$store.getters['cart/count'];
+    },
   },
   methods: {
     openURL,
@@ -113,6 +117,8 @@ export default {
     // setTimeout(() => {
     //   this.cart_count += 1;
     // }, 5000);
+    this.$store.dispatch('cart/openDB');
+    this.$store.dispatch('cart/list');
   },
 };
 </script>
