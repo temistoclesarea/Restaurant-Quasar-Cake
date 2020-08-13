@@ -62,8 +62,8 @@ export default {
       return this.totalProducts + delivery;
     },
     current() {
-      // return this.$store.state.cart.currentId;
-      return 1;
+      return this.$store.state.cart.currentId;
+      // return 1;
     },
     restaurant() {
       return this.$store.state.restaurants.current;
@@ -130,7 +130,7 @@ export default {
   },
   mounted() {
     if (!this.$route.params.id && this.current) {
-      this.$route.push(`/cart/${this.current}`);
+      this.$router.push(`/cart/${this.current}`);
     }
     if (this.$route.params.id && !this.current) {
       this.$store.dispatch('cart/current', this.$route.params.id);
