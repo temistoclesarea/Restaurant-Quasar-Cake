@@ -93,7 +93,7 @@ export default {
   watch: {
     cart_count(newValue, oldValue) {
       if (newValue > oldValue) {
-        console.log(newValue, oldValue);
+        // console.log(newValue, oldValue);
         this.$q.notify({
           message: 'Pedido atualizado!',
           detail: 'Um novo item foi adicionado ao seu pedido, quer ir para o carrinho de compras?',

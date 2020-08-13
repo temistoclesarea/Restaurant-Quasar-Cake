@@ -9,6 +9,7 @@ const routes = [
       { path: 'list-restaurants/:location', component: () => import('pages/restaurants/front-list.vue') },
       { path: 'restaurant/:id', component: () => import('pages/restaurants/detail-front.vue') },
       { path: 'cart', component: () => import('pages/cart.vue') },
+      { path: 'cart/:id', component: () => import('pages/cart.vue') },
       { path: 'address/create', component: () => import('pages/address/create.vue') },
       { path: 'order/:id', component: () => import('pages/order.vue') },
       { path: 'order/:id/details', component: () => import('pages/orders/details.vue') },

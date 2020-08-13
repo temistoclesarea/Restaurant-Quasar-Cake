@@ -3,21 +3,21 @@
     <h1 class="q-display-2">
       Carrinho de compras
     </h1>
-    <q-card class="q-mb-sm" v-for="i in 4" :key="i">
+    <q-card class="q-mb-sm" v-for="(product, i) in products" :key="i">
       <q-card-main class="row">
         <div class="col-md-1 col-xs-2">
-          <img src="~assets/user-icon-vector.jpg" alt="avatar"
-          style="width:50px;" class="round-borders">
+          <img :src="'http://localhost:8765/uploader/plates/' + product.photo" alt="avatar"
+          style="width:50px;" class="round-borders"/>
         </div>
         <div class="col flex items-center">
-          Nome do produto
+          {{ product.title }}
         </div>
         <div class="col-md-4 flex items-center justify-end">
-          {{ i }} <q-btn color="green" class="q-mx-md">+</q-btn>
-          <q-btn color="red" class="q-mr-md">-</q-btn>
+          {{ product.qtd }} <q-btn color="green" class="q-mx-md" @click="add(product)">+</q-btn>
+          <q-btn color="red" class="q-mr-md" @click="remove(product)">-</q-btn>
         </div>
         <div class="col-2 flex items-center justify-end">
-          R$ 10,00
+          R$ {{ product.price * product.qtd | price }}
         </div>
       </q-card-main>
     </q-card>
@@ -25,13 +25,13 @@
     <div class="row">
       <q-card class="col-xs-12 col-md-6 offset-md-6 text-black text-right" color="grey-3">
         <q-card-main>
-          Entrega: R$ 5,00
+          Entrega: {{ parseInt(delivery) | price }}
         </q-card-main>
         <q-card-main>
-          Pedido: R$ 40,00
+          Pedido: {{ totalProducts | price }}
         </q-card-main>
         <q-card-main>
-          Entrega: R$ 45,00
+          Entrega: {{ total | price }}
         </q-card-main>
         <q-card-actions class="flex justify-end">
           <q-btn color="green" label="Fechar pedido" @click="buy()"/>
@@ -43,7 +43,50 @@
 
 <script>
 export default {
+  computed: {
+    products() {
+      return this.$store.state.cart.list;
+    },
+    delivery() {
+      return this.restaurant.delivery_price || '0';
+    },
+    totalProducts() {
+      let total = 0;
+      this.products.forEach((value) => {
+        total += value.qtd * value.price;
+      });
+      return total;
+    },
+    total() {
+      const delivery = parseInt(this.delivery, 0);
+      return this.totalProducts + delivery;
+    },
+    current() {
+      // return this.$store.state.cart.currentId;
+      return 1;
+    },
+    restaurant() {
+      return this.$store.state.restaurants.current;
+    },
+  },
+  filters: {
+    price(value) {
+      const formatter = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+        minimumFractionDigits: 2,
+      });
+
+      return formatter.format(value);
+    },
+  },
   methods: {
+    add(data) {
+      this.$store.dispatch('cart/add', data);
+    },
+    remove(data) {
+      this.$store.dispatch('cart/remove', data);
+    },
     buy() {
       // console.log('buy');
       this.$q.actionSheet({
@@ -84,6 +127,15 @@ export default {
         ],
       });
     },
+  },
+  mounted() {
+    if (!this.$route.params.id && this.current) {
+      this.$route.push(`/cart/${this.current}`);
+    }
+    if (this.$route.params.id && !this.current) {
+      this.$store.dispatch('cart/current', this.$route.params.id);
+    }
+    this.$store.dispatch('restaurants/current', { vue: this, id: this.current });
   },
 };
 </script>

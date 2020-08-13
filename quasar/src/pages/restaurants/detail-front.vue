@@ -56,9 +56,12 @@ export default {
           model: this.opt,
           items: options,
         },
-      }).then((data) => { /* executando quando confirma a ação */
-        console.log(data);
+      }).then(async (data) => { /* executando quando confirma a ação */
+        // console.log(data);
         this.opt = data; /* já deixa a opção marcada */
+        plate.options = data;
+        await this.$store.dispatch('cart/add', plate);
+        this.$store.dispatch('cart/list');
       });
     },
   },
@@ -73,6 +76,7 @@ export default {
   mounted() {
     this.$store.dispatch('restaurants/current', { vue: this, id: this.$route.params.id });
     this.$store.dispatch('plates/all', { vue: this, id: this.$route.params.id });
+    this.$store.dispatch('cart/current', this.$route.params.id);
   },
 };
 </script>

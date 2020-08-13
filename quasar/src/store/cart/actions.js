@@ -19,10 +19,10 @@ export function add(context, data) {
       } else {
         data.qtd = value.qtd + 1;
       }
+      // id unico e data é todos os data como objeto
+      window.stores.cart.setItem(data.id, data)
+        .then(() => resolve());
     });
-    // id unico e data é todos os data como objeto
-    window.stores.cart.setItem(data.id, data)
-      .then(() => resolve);
   });
 }
 
@@ -32,6 +32,7 @@ export function remove(context, data) {
       return;
     }
     data.qtd = value.qtd - 1;
+
     if (data.qtd <= 0) {
       window.stores.cart.removeItem(data.id);
     } else {
