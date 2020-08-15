@@ -14,6 +14,13 @@ use App\Uploader\Uploader;
 class RestaurantsController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->Auth->allow(['search', 'view']);
+    }
+
     public function index()
     {
         $this->paginate = [

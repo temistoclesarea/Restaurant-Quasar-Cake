@@ -68,6 +68,9 @@ export default {
     restaurant() {
       return this.$store.state.restaurants.current;
     },
+    address() {
+      return this.$store.state.address.list;
+    },
   },
   filters: {
     price(value) {
@@ -89,46 +92,43 @@ export default {
     },
     buy() {
       // console.log('buy');
-      this.$q.actionSheet({
-        title: 'Escolha o endereço',
-        actions: [
-          {
-            label: 'R. XXX, 100 - centro - Teresina - Cep 64.000-000',
-            icon: 'add_location',
-            color: 'green',
-            handler: () => {
-              this.$router.push('/order/1');
-            },
-          },
-          {
-            label: 'R. YYY, 10 - centro - Teresina - Cep 64.000-000',
-            icon: 'add_location',
-            color: 'green',
-            handler: () => {
-              this.$router.push('/order/2');
-            },
-          },
-          {
-            label: 'R. ZZZ, 101 - leste - Teresina - Cep 64.000-000',
-            icon: 'add_location',
-            color: 'green',
-            handler: () => {
-              this.$router.push('/order/3');
-            },
-          },
-          {},
-          {
+      this.$store.dispatch('address/all', this)
+        .then(() => {
+          const actions = [];
+
+          this.address.forEach((a) => {
+            actions.push({
+              label: `${a.address}, ${a.number}, - ${a.neighborhood} - ${a.city} - Cep ${a.cep}`,
+              icon: 'add_location',
+              color: 'green',
+              handler: () => {
+                this.$router.push(`/order/${a.id}`);
+              },
+            });
+          });
+
+          actions.push({});
+
+          actions.push({
             label: 'Adicionar novo endereço',
             icon: 'add_circle',
             handler: () => {
               this.$router.push('/address/create');
             },
-          },
-        ],
-      });
+          });
+
+          this.$q.actionSheet({
+            title: 'Escolha o endereço',
+            actions,
+          });
+        });
     },
   },
   mounted() {
+    if (window.stores) {
+      this.$store.dispatch('cart/list');
+    }
+
     if (!this.$route.params.id && this.current) {
       this.$router.push(`/cart/${this.current}`);
     }

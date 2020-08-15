@@ -30,7 +30,15 @@ export default {
   },
   methods: {
     submit() {
-      console.log(this.data);
+      // console.log(this.data);
+      this.$store.dispatch('address/create', { vue: this, data: this.data })
+        .then(() => {
+          this.$q.notify({
+            message: 'Salvo com sucesso.',
+            type: 'positive',
+          });
+        });
+      this.$router.go(-1);
     },
   },
 };
