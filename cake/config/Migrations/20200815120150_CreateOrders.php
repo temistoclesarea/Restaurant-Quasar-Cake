@@ -13,12 +13,12 @@ class CreateOrders extends AbstractMigration
     public function change()
     {
         $table = $this->table('orders');
-        $table->addColumn('paymant_method', 'string', [
+        $table->addColumn('payment_method', 'string', [
             'default' => null,
             'limit' => 255,
             'null' => true,
         ]);
-        $table->addColumn('paymant_price', 'decimal', [
+        $table->addColumn('payment_price', 'decimal', [
             'default' => null,
             'null' => true,
         ]);

@@ -4,13 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use App\Uploader\Uploader;
 
-/**
- * Restaurants Controller
- *
- * @property \App\Model\Table\RestaurantsTable $Restaurants
- *
- * @method \App\Model\Entity\Restaurant[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
- */
+
 class RestaurantsController extends AppController
 {
 

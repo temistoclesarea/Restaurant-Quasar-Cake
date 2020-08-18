@@ -5,6 +5,7 @@ import restaurants from './restaurants';
 import plates from './plates';
 import cart from './cart';
 import address from './address';
+import orders from './orders';
 
 Vue.use(Vuex);
 
@@ -20,6 +21,7 @@ export default function (/* { ssrContext } */) {
       plates,
       cart,
       address,
+      orders,
     },
   });
 

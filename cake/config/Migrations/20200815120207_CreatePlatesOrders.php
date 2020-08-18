@@ -13,16 +13,21 @@ class CreatePlatesOrders extends AbstractMigration
     public function change()
     {
         $table = $this->table('plates_orders');
-        $table->addColumn('paymant_method', 'string', [
+        $table->addColumn('title', 'string', [
             'default' => null,
             'limit' => 255,
-            'null' => true,
+            'null' => false,
         ]);
-        $table->addColumn('paymant_price', 'decimal', [
+        $table->addColumn('photo', 'string', [
             'default' => null,
-            'null' => true,
+            'limit' => 255,
+            'null' => false,
         ]);
-        // XXX: ver o que falta aqui
+        $table->addColumn('description', 'string', [
+            'default' => null,
+            'limit' => 255,
+            'null' => false,
+        ]);
         $table->addColumn('price', 'decimal', [
             'default' => null,
             'null' => false,
