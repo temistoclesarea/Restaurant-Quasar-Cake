@@ -5,7 +5,7 @@
     </h1>
 
     <q-stepper ref="stepper" color="green" :no-header-navigation="true">
-      <q-step
+      <q-step name="payment"
         title="Forma de pagamento"
         active-icon="access_time"
       >
@@ -14,13 +14,13 @@
           <q-btn label="Escolher" color="primary" @click="payment_form=true"/>
         </p>
       </q-step>
-      <q-step
+      <q-step name="in_confirmation"
         title="Pedido recebido"
         active-icon="access_time"
       >
         <h5 class="text-center">Aguarde a confirmação do restaurante?</h5>
       </q-step>
-      <q-step
+      <q-step name="confirmed"
         title="Confirmação do restaurante"
         active-icon="access_time"
       >
@@ -29,7 +29,7 @@
           Estamos preparando o seu pedido, ele deve ser entregue a partir de 40 minutos.
         </p>
       </q-step>
-      <q-step
+      <q-step name="in_delivery"
         title="Saiu para Entrega"
         active-icon="access_time"
       >
@@ -38,7 +38,7 @@
           Fique de olho no seu celular, o entregador pode precisar de informações.
         </p>
       </q-step>
-      <q-step
+      <q-step name="done"
         title="Entregue"
         active-icon="access_time"
       >
@@ -101,11 +101,22 @@ export default {
       change: 0.00,
     };
   },
+  computed: {
+    order() {
+      return this.$store.state.orders.current;
+    },
+  },
   methods: {
     pay() {
       this.payment_form = false;
       this.$refs.stepper.next();
     },
+  },
+  mounted() {
+    this.$store.dispatch('orders/current', { vue: this, id: this.$route.params.id })
+      .then(() => {
+        this.$refs.stepper.goToStep(this.order.status);
+      });
   },
 };
 </script>

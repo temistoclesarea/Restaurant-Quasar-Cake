@@ -102,7 +102,18 @@ export default {
               icon: 'add_location',
               color: 'green',
               handler: () => {
-                this.$router.push(`/order/${a.id}`);
+                // this.$router.push(`/order/${a.id}`);
+                const data = {
+                  plates_orders: this.products,
+                  total: this.total,
+                  address_id: a.id,
+                  restaurant_id: this.restaurant.id,
+                };
+
+                this.$store.dispatch('orders/create', { vue: this, data })
+                  .then(() => {
+                    // this.$router.push(`/order/${res.data.order.id}`);
+                  });
               },
             });
           });

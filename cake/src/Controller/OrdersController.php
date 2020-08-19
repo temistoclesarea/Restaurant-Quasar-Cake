@@ -41,12 +41,17 @@ class OrdersController extends AppController
 
     public function view($id = null) //XXX: possivel problema com token via "options" que vai ser corrigido depois
     {
-        $order = $this->Orders->get($id, [
-            'contain' => ['Restaurants', 'Addresses', 'Users', 'Plates'],
-            'conditions' => [
-                'Orders.user_id' => $this->Auth->user('id'),
-            ],
-        ]); 
+        if ($this->request->is('get')) { // "Options" não passa parametro corretamente para o controller
+            $order = $this->Orders->get($id, [
+                'contain' => ['Restaurants', 'Addresses', 'Users', 'PlatesOrders'],
+                'conditions' => [
+                    'Orders.user_id' => $this->Auth->user('id'),
+                ],
+            ]); 
+        } else {
+            $order = $this->Orders->newEntity(); // Envia uma entidade vazia para não passar uma variavel nula
+        }
+
         $this->set([
             'order' => $order,
             '_serialize' => ['order'],

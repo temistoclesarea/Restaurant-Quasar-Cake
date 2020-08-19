@@ -1,5 +1,3 @@
-// import qs from 'qs'; // para serializar a informação para o formato correto
-
 export function all(context, config) {
   const { vue } = config; // mesma coisa de config.vue
   const { id } = config; // mesma coisa de config.id

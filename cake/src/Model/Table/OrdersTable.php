@@ -51,10 +51,8 @@ class OrdersTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsToMany('Plates', [
+        $this->hasMany('PlatesOrders', [
             'foreignKey' => 'order_id',
-            'targetForeignKey' => 'plate_id',
-            'joinTable' => 'plates_orders',
         ]);
     }
 

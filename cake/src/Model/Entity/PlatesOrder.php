@@ -4,23 +4,23 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Order Entity
+ * PlatesOrder Entity
  *
  * @property int $id
- * @property string|null $payment_method
- * @property float|null $payment_price
- * @property float $total
- * @property string $status
+ * @property string $title
+ * @property string $photo
+ * @property string $description
+ * @property float $price
+ * @property int $qtd
+ * @property int $order_id
  * @property int $restaurant_id
- * @property int $address_id
- * @property int $user_id
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
+ * @property \App\Model\Entity\Order $order
  * @property \App\Model\Entity\Restaurant $restaurant
- * @property \App\Model\Entity\Address $address
- * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Plate[] $plates
  */
-class Order extends Entity
+class PlatesOrder extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -32,16 +32,16 @@ class Order extends Entity
      * @var array
      */
     protected $_accessible = [
-        'payment_method' => true,
-        'payment_price' => true,
-        'total' => true,
-        'status' => true,
+        'title' => true,
+        'photo' => true,
+        'description' => true,
+        'price' => true,
+        'qtd' => true,
+        'order_id' => true,
         'restaurant_id' => true,
-        'address_id' => true,
-        'user_id' => true,
+        'created' => true,
+        'modified' => true,
+        'order' => true,
         'restaurant' => true,
-        'address' => true,
-        'user' => true,
-        'plates_orders' => true,
     ];
 }
