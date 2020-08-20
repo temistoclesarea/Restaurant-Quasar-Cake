@@ -13,8 +13,7 @@
       <q-tr
         slot="body"
         slot-scope="props"
-        class="cursor-pointer"
-        @click.native="gotToOrder(props.row.id)">
+        class="cursor-pointer">
         <q-td key="id" class="text-right">
           {{ props.row.id }}
         </q-td>
@@ -31,7 +30,12 @@
           {{ props.row.status }}
         </q-td>
         <q-td key="actions" class="text-right">
-          <q-btn color="primary" size="sm">+ detalhes</q-btn>
+          <q-select
+            v-model="status"
+            float-label="Status"
+            radios
+            :options="selectOptions"
+            @input="update(props.row.id)"/>
         </q-td>
       </q-tr>
       </q-table>
@@ -42,10 +46,25 @@
 export default {
   data() {
     return {
+      status: null,
+      selectOptions: [
+        {
+          label: 'Confirmar pedido',
+          value: 'confirmed',
+        },
+        {
+          label: 'Saiu para entrega',
+          value: 'in_delivery',
+        },
+        {
+          label: 'Entrega realizada',
+          value: 'done',
+        },
+      ],
       columns: [
         {
           field: 'id',
-          label: ' ',
+          label: '',
         },
         {
           field: 'restaurant',
@@ -72,12 +91,15 @@ export default {
     },
   },
   methods: {
-    gotToOrder(id) {
-      this.$router.push(`/order/${id}/details`);
+    update(id) {
+      const data = {
+        status: this.status,
+      };
+      this.$store.dispatch('orders/edit', { vue: this, id, data });
     },
   },
   mounted() {
-    this.$store.dispatch('orders/all', { vue: this });
+    this.$store.dispatch('orders/all', { vue: this, id: this.$route.params.id });
   },
 };
 </script>

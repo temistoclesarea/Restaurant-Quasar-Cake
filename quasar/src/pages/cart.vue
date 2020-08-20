@@ -111,8 +111,9 @@ export default {
                 };
 
                 this.$store.dispatch('orders/create', { vue: this, data })
-                  .then(() => {
-                    // this.$router.push(`/order/${res.data.order.id}`);
+                  .then((res) => {
+                    this.$store.dispatch('cart/clear');
+                    this.$router.push(`/order/${res.data.order.id}`);
                   });
               },
             });

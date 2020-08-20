@@ -17,6 +17,8 @@
         </q-td>
         <q-td key="actions" class="text-right">
           <q-btn color="secondary" class="q-mr-sm" size="sm"
+          :to="'/restaurant/' + props.row.id + '/order'">+ Pedidos</q-btn>
+          <q-btn color="secondary" class="q-mr-sm" size="sm"
           :to="'/restaurant/' + props.row.id + '/detail'">+ Detalhes</q-btn>
           <q-btn color="primary" class="q-mr-sm" size="sm"
           :to="'/restaurant/' + props.row.id + '/edit'">Editar</q-btn>

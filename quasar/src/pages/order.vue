@@ -108,15 +108,35 @@ export default {
   },
   methods: {
     pay() {
+      if (this.payment === '1' && this.change < this.order.total) {
+        this.$q.notify({
+          message: 'O valor deve ser maior que o total da compra.',
+        });
+        return;
+      }
       this.payment_form = false;
-      this.$refs.stepper.next();
+      const data = {
+        payment_method: this.payment,
+        payment_price: this.change,
+        status: 'in_confirmation',
+      };
+
+      this.$store.dispatch('orders/edit', { vue: this, id: this.order.id, data })
+        .then(() => {
+          this.$refs.stepper.next();
+        });
+    },
+    getServerData() {
+      this.$store.dispatch('orders/current', { vue: this, id: this.$route.params.id })
+        .then(() => {
+          this.$refs.stepper.goToStep(this.order.status);
+          const setedTime = 5 * 1000;
+          setTimeout(this.getServerData, setedTime);
+        });
     },
   },
   mounted() {
-    this.$store.dispatch('orders/current', { vue: this, id: this.$route.params.id })
-      .then(() => {
-        this.$refs.stepper.goToStep(this.order.status);
-      });
+    this.getServerData();
   },
 };
 </script>

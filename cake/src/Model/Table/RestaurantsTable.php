@@ -54,6 +54,10 @@ class RestaurantsTable extends Table
         $this->hasMany('Plates', [
             'foreignKey' => 'restaurant_id',
         ]);
+
+        /* $this->hasMany('Orders', [
+            'foreignKey' => 'restaurant_id',
+        ]); */
     }
 
     /**

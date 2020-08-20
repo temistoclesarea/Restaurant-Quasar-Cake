@@ -18,6 +18,7 @@ const routes = [
       { path: 'auth', component: () => import('pages/auth.vue') },
       { path: 'restaurants', component: () => import('pages/restaurants/list.vue') },
       { path: 'restaurant/:id/edit', component: () => import('pages/restaurants/edit.vue') },
+      { path: 'restaurant/:id/order', component: () => import('pages/restaurants/orders.vue') },
       { path: 'restaurant/:id/detail', component: () => import('pages/restaurants/detail.vue') },
       { path: 'restaurant/plate/:id/edit', component: () => import('pages/restaurants/plate/edit.vue') },
       { path: 'restaurant/:id/plate/create', component: () => import('pages/restaurants/plate/create.vue') },

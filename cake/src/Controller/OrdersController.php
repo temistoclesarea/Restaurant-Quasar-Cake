@@ -9,24 +9,25 @@ class OrdersController extends AppController
 
     public function index()
     {
-        // http://localhost:8765/orders.json?restaurant_id=5
+        // http://localhost:8765/orders.json?restaurant=5
         $restaurant_id = $this->request->getQuery('restaurant');
 
-        $restaurant = $this->Orders->Restaurants->find('first', [
+        $restaurant = $this->Orders->Restaurants->find('all', [
             'conditions' => [
-                'user-id' => $this->Auth->user('id'),
+                'Restaurants.user_id' => $this->Auth->user('id'),
                 'id' => $restaurant_id,
             ],
-        ]);
-        if (!$restaurant and $restaurant_id) {
-            throw new UnauthorizedException; //XXX: obs
+        ])->first();
+
+        if (!$restaurant and !$restaurant_id) { // BUG: bug na condição em pedidos restaurant e meus pedidos - corrigir
+            throw new UnauthorizedException; //XXX: força um erro de autorização se não exitir restaurante
         }
         $this->paginate = [
             'contain' => ['Restaurants', 'Addresses', 'Users'],
             'conditions' => [
                 'or' => [
-                    'user_id' => $this->Auth->user('id'),
-                    'restaurant_id' => $restaurant_id,
+                    'Orders.user_id' => $this->Auth->user('id'),
+                    'Orders.restaurant_id' => $restaurant_id,
                 ],
             ]
         ];
@@ -39,7 +40,7 @@ class OrdersController extends AppController
     }
 
 
-    public function view($id = null) //XXX: possivel problema com token via "options" que vai ser corrigido depois
+    public function view($id = null) //XXX: cuidado com o "options"
     {
         if ($this->request->is('get')) { // "Options" não passa parametro corretamente para o controller
             $order = $this->Orders->get($id, [
@@ -79,7 +80,7 @@ class OrdersController extends AppController
     public function edit($id = null)
     {
         $order = $this->Orders->get($id, [
-            'contain' => ['Plates'],
+            'contain' => ['PlatesOrders'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $order = $this->Orders->patchEntity($order, $this->request->getData());

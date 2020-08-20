@@ -2,7 +2,12 @@ export function all(context, config) {
   const { vue } = config; // mesma coisa de config.vue
   const { id } = config; // mesma coisa de config.id
 
-  return vue.$axios.get(`/orders.json/restaurant=${id}`)
+  let url = '/orders.json';
+  if (id) {
+    url += `?restaurant=${id}`;
+  }
+
+  return vue.$axios.get(url)
     .then((res) => { // atualiza a resposta do servidor dentro do mutations
       context.commit('setList', res.data.orders);
     });
